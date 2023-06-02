@@ -1,48 +1,6 @@
 # RISE
 Code for RISE: Recorder of Individual Student Engagement
 
-RISE
-├── README.md
-├── RISE_hardware
-│   └── RISE_hardware.ino
-├── RISE_server
-│   ├── __init__.py
-│   ├── __pycache__
-│   │   ├── __init__.cpython-310.pyc
-│   │   ├── __init__.cpython-38.pyc
-│   │   ├── participationater.cpython-310.pyc
-│   │   ├── participationater.cpython-38.pyc
-│   │   ├── server.cpython-310.pyc
-│   │   └── server.cpython-38.pyc
-│   ├── participationater.py
-│   ├── server.py
-│   ├── static
-│   │   └── riselogo.png
-│   └── templates
-│       ├── classtable.html
-│       └── index.html
-├── RISE_server.egg-info
-│   ├── PKG-INFO
-│   ├── SOURCES.txt
-│   ├── dependency_links.txt
-│   ├── requires.txt
-│   └── top_level.txt
-├── build
-│   ├── bdist.macosx-10.9-x86_64
-│   └── lib
-│       └── RISE_server
-│           ├── __init__.py
-│           ├── participationater.py
-│           ├── server.py
-│           ├── static
-│           │   └── riselogo.png
-│           └── templates
-│               ├── classtable.html
-│               └── index.html
-├── requirements.txt
-└── setup.py
-
-
 RISE_hardware/RISE_hardware.ino is the code that must be loaded into the Arduino IDE for upload into your FireBeetle ESP32 microcontroller. Note you should adjust the IP address from the hardcoded value of 192.168.10.42 on line 23 to something that will work with your local network. Similarly, adjust the Wifi SSID and password on lines 15 and 16 to work with your Wifi setup.
 
 RISE_server/ contains the python code that runs the webserver that will parse the hardware messages into handraising events, associate them with students, and save to the database. To install, first install python 3.10. Then clone this repo into some directory, go to the "RISE/" directory; check that it contains "setup.py", and then run "pip install ."
