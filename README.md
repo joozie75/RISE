@@ -1,5 +1,5 @@
 # RISE
-Code for RISE: Recording Individual Student Engagement
+Code for RISE: Recorder of Individual Student Engagement
 
 RISE_hardware/RISE_hardware.ino is the code that must be loaded into the Arduino IDE for upload into your FireBeetle ESP32 microcontroller. Note you should adjust the IP address from the hardcoded value of 192.168.10.42 on line 23 to something that will work with your local network. Similarly, adjust the Wifi SSID and password on lines 15 and 16 to work with your Wifi setup.
 
