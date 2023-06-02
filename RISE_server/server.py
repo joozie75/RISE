@@ -2,7 +2,10 @@ from flask import Flask, request, render_template, redirect, url_for
 import sqlite3
 import sys
 from io import StringIO
-from RISE_server import participationater as pp
+try:
+    from RISE_server import participationater as pp
+except:
+    import participationater as pp
 import argparse
 import threading
 import datetime
@@ -11,7 +14,10 @@ listening_thread = None
 
 def _parse_args():
     parser = argparse.ArgumentParser(description="RISE with multiple modes of operation")
-    parser.add_argument("--dbname", help="Name of the database", default="test0.db")
+    parser.add_argument("--dbname", help="Name of the database", default="test0.db", required=False)
+    parser.add_argument("--device_ip", help="IP addr of RISE device", default="192.168.10.42", required=False)
+    parser.add_argument("--device_port", help="PORT of RISE device", default="80", required=False)
+
     args = parser.parse_args()
     return args
 
@@ -25,7 +31,7 @@ sys.stdout = mystdout = StringIO()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    global dbname, c, listening_thread
+    global dbname, c, listening_thread, ipaddr, port
     class_name=""
     if request.method == 'POST':
         if 'add_student' in request.form:
@@ -61,14 +67,13 @@ def home():
             class_name = request.form.get('class_name')
             pp.stop_listen = False
             def bgtask():
-                pp.listen_to_events(f"http://{pp.ipaddr}:{pp.port}/events", class_name)
+                pp.listen_to_events(f"http://{ipaddr}:{port}/events", class_name)
             listening_thread = threading.Thread(target=bgtask)
             listening_thread.start()
-            print(f"Listening to http://{pp.ipaddr}:{pp.port}/events for events in class {class_name}")
-            #pp.listen_to_events(f"http://{pp.ipaddr}:{pp.port}/events",class_name)
+            print(f"Listening to http://{ipaddr}:{port}/events for events in class {class_name}")
         elif 'stopmonitor' in request.form:
             class_name = request.form.get('class_name')
-            print(f"Stop listening to http://{pp.ipaddr}:{pp.port}/events for events in class {class_name}")
+            print(f"Stop listening to http://{ipaddr}:{port}/events for events in class {class_name}")
             pp.stop_listen=True
             if listening_thread is not None:
                 listening_thread.join()
@@ -79,7 +84,7 @@ def home():
 
     # Get the stdout string
     stdout_string = mystdout.getvalue()
-    return render_template('index.html', stdout_string=stdout_string, dbname=dbname, class_name=class_name, hardwareip=f"{pp.ipaddr}:{pp.port}")
+    return render_template('index.html', stdout_string=stdout_string, dbname=dbname, class_name=class_name, hardwareip=f"{ipaddr}:{port}")
 
 @app.route('/class/<class_name>', methods=['GET'])
 def class_handraises(class_name):
@@ -99,8 +104,11 @@ def class_handraises(class_name):
     return render_template('classtable.html', students=students, class_name=class_name, datestr=datestr, listening_status=f"Listening is {'on' if not pp.stop_listen else 'off'}")
 
 if __name__ == '__main__':
+    import os
     args = _parse_args()
     c, pp.conn = pp.dbcc(args.dbname)
     dbname = args.dbname
+    ipaddr = args.device_ip
+    port = args.device_port
     pp.stop_listen=True
     app.run(debug=True)

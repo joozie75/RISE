@@ -11,8 +11,8 @@ import sys
 import datetime
 import os
 
-ipaddr = '192.168.10.42'
-port = '80'
+#ipaddr = '192.168.10.42'
+#port = '80'
 
 silentperiod = True
 
@@ -28,6 +28,8 @@ def _parse_args():
     parser.add_argument("mode", choices=["init", "add-students", "delete-students", "main", "class-list"], help="Operation mode")
     parser.add_argument("--dbname", help="Name of the database", default="test0.db")
     parser.add_argument("--classname", help="Name of class", required=False)
+    parser.add_argument("--device_ip", help="IP addr of RISE device", default="192.168.10.42", required=False)
+    parser.add_argument("--device_port", help="PORT of RISE device", default="80", required=False)
 
     args = parser.parse_args()
     return args
@@ -342,7 +344,7 @@ if __name__ == '__main__':
         classlist(c, args.classname)
     elif args.mode == "main":
         assert args.classname is not None, "Must specify a class"
-        listen_to_events(f"http://{ipaddr}:{port}/events", args.classname)
+        listen_to_events(f"http://{args.device_ip}:{args.device_port}/events", args.classname)
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
