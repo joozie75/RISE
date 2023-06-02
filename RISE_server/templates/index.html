@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Participationater Management</title>
+    <style>
+        .header {
+            display: flex;
+            align-items: center;  /* This will vertically align the items in the middle */
+            justify-content: center; /* This will horizontally align the items in the middle */
+        }
+        .logo {
+            width: 100px;  /* Adjust these values to get the size you want */
+            height: 100px;
+            margin-right: 10px; /* Adds some spacing between the logo and the title */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+
+        form input[type="text"],
+        form input[type="number"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        form input[type="submit"] {
+            background-color: #0099cc;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #007399;
+        }
+
+        .output {
+            margin-top: 20px;
+            background-color: #eee;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .output textarea {
+            width: 97%;
+            height: 400px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img class="logo" src="{{ url_for('static', filename='riselogo.png') }}" alt="Logo">&nbsp
+        <h1>Classroom Manager</h1>
+    </div>
+    <p>Database connected to: {{ dbname }}
+     <p>Hardware IP Address: {{ hardwareip }}</p> <button id="go-button">Class Monitor Tab</button><button id="device-button">Device Tab</button><br><br>
+    <form method="POST">
+        <input type="text" name="class_name" placeholder="Class Name" value="{{ class_name }}">
+        <input type="text" name="student_name" placeholder="Student Name">
+        <input type="text" name="signature" placeholder="Color Signature"><br><br>
+        <button type="submit" name="add_student">Add Student</button>
+        <button type="submit" name="delete_student">Delete Student</button>
+        <button type="submit" name="show_class">Show Class List</button>
+        <button type="submit" name="show_student">Show Student</button>
+        <button type="submit" name="show_raises">Show Handraises</button><Br><br>
+        <button type="submit" name="startmonitor">StartMonitor</button>
+        <button type="submit" name="stopmonitor">StopMonitor</button>
+        <button type="submit" name="refresh">Refresh</button><br><br>
+    </form>
+    <div class="output">
+        <textarea rows="100" readonly>{{ stdout_string }}</textarea>
+    </div>
+    <script>
+        document.getElementById('go-button').onclick = function() {
+            var className = document.getElementsByName('class_name')[0].value;
+            if (className === '') {
+                alert('Please enter a class name');
+            } else {
+                var win = window.open('/class/' + className, className);
+                win.focus();
+            }
+        };
+        document.getElementById('device-button').onclick = function() {
+            var ip_address = '{{ hardwareip }}';  // Fetch the IP address from Jinja2
+            var win = window.open('http://' + ip_address, 'risedevice');
+            win.focus()
+        };
+    </script>
+</body>
+</html>

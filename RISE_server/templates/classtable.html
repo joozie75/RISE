@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ class_name }} Handraises for {{ datestr }}</title>
+    <meta http-equiv="refresh" content="10"> <!-- This will refresh the page every 10 seconds -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+        }
+        table {
+            border-collapse: collapse;
+            background-color: white;
+            margin: auto;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+         h1, h2, h4{
+            text-align: center;
+        }
+        .back-button {
+            text-align: center;
+        }
+        .button-container {
+            text-align: center;
+        }
+        .header {
+            display: flex;
+            align-items: center;  /* This will vertically align the items in the middle */
+            justify-content: center; /* This will horizontally align the items in the middle */
+        }
+        .logo {
+            width: 100px;  /* Adjust these values to get the size you want */
+            height: 100px;
+            margin-right: 10px; /* Adds some spacing between the logo and the title */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img class="logo" src="{{ url_for('static', filename='riselogo.png') }}" alt="Logo">&nbsp
+        <h1>{{ class_name }} Handraises for {{ datestr }}</h1>
+    </div>
+    <h4>{{ listening_status }}</h4>
+    <table>
+        <tr>
+            <th>Student Name</th>
+            <th>Handraises</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{ student[0] }}</td>
+            <td>{{ student[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table><br><br>
+    <div class="button-container">
+        <a href="{{ url_for('home') }}" class="back-button">Back</a>
+    </div>
+</body>
+</html>
