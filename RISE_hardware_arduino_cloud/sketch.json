@@ -1,0 +1,9 @@
+{
+  "cpu": {
+    "fqbn": "esp32:esp32:firebeetle32:DebugLevel=none,EraseFlash=none,FlashFreq=80,UploadSpeed=921600",
+    "name": "FireBeetle-ESP32",
+    "type": "serial"
+  },
+  "secrets": [],
+  "included_libs": []
+}
