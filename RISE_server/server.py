@@ -111,4 +111,4 @@ if __name__ == '__main__':
     ipaddr = args.device_ip
     port = args.device_port
     pp.stop_listen=True
-    app.run(debug=True)
+    app.run(host='0.0.0.0',debug=True)
